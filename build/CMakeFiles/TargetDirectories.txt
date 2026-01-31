@@ -1,0 +1,7 @@
+C:/Users/snave/Desktop/Obfuscate_LLVM/build/CMakeFiles/intrinsics_gen.dir
+C:/Users/snave/Desktop/Obfuscate_LLVM/build/CMakeFiles/omp_gen.dir
+C:/Users/snave/Desktop/Obfuscate_LLVM/build/CMakeFiles/acc_gen.dir
+C:/Users/snave/Desktop/Obfuscate_LLVM/build/CMakeFiles/RISCVTargetParserTableGen.dir
+C:/Users/snave/Desktop/Obfuscate_LLVM/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/snave/Desktop/Obfuscate_LLVM/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/snave/Desktop/Obfuscate_LLVM/build/src/tools/obfuscator/CMakeFiles/obfuscator.dir

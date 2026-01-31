@@ -1,0 +1,10 @@
+{
+  "obfuscation_metrics": {
+    "flattened_functions": 0,
+    "bogus_blocks": 0,
+    "opaque_predicates": 0,
+    "encrypted_strings": 44,
+    "substituted_instructions": 80,
+    "indirect_calls": 95
+  }
+}

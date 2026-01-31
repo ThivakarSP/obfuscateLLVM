@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/snave/Desktop/Obfuscate_LLVM/build/cmake_install.cmake",
+		"C:/Users/snave/Desktop/Obfuscate_LLVM/build/src/tools/obfuscator/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

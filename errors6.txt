@@ -1,0 +1,4 @@
+﻿MSBuild version 18.0.5+e22287bf1 for .NET Framework
+
+  ObfuscationLib.vcxproj -> C:\Users\snave\Desktop\Obfuscate_LLVM\build\src\lib\Release\ObfuscationLib.lib
+LINK : fatal error LNK1181: cannot open input file 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\DIA SDK\lib\amd64\diaguids.lib' [C:\Users\snave\Desktop\Obfuscate_LLVM\build\src\tools\obfuscator\obfuscator.vcxproj]

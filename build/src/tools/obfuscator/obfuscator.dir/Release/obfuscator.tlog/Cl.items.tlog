@@ -1,0 +1,6 @@
+C:\Users\snave\Desktop\Obfuscate_LLVM\src\tools\obfuscator\main.cpp;C:\Users\snave\Desktop\Obfuscate_LLVM\build\src\tools\obfuscator\obfuscator.dir\Release\main.obj
+C:\Users\snave\Desktop\Obfuscate_LLVM\src\lib\Passes\Substitution.cpp;C:\Users\snave\Desktop\Obfuscate_LLVM\build\src\tools\obfuscator\obfuscator.dir\Release\Substitution.obj
+C:\Users\snave\Desktop\Obfuscate_LLVM\src\lib\Passes\StringEncryption.cpp;C:\Users\snave\Desktop\Obfuscate_LLVM\build\src\tools\obfuscator\obfuscator.dir\Release\StringEncryption.obj
+C:\Users\snave\Desktop\Obfuscate_LLVM\src\lib\Passes\IndirectCall.cpp;C:\Users\snave\Desktop\Obfuscate_LLVM\build\src\tools\obfuscator\obfuscator.dir\Release\IndirectCall.obj
+C:\Users\snave\Desktop\Obfuscate_LLVM\src\lib\Passes\Flattening.cpp;C:\Users\snave\Desktop\Obfuscate_LLVM\build\src\tools\obfuscator\obfuscator.dir\Release\Flattening.obj
+C:\Users\snave\Desktop\Obfuscate_LLVM\src\lib\Passes\BogusControlFlow.cpp;C:\Users\snave\Desktop\Obfuscate_LLVM\build\src\tools\obfuscator\obfuscator.dir\Release\BogusControlFlow.obj
