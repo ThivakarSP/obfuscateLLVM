@@ -16,7 +16,6 @@ public:
         else srand((unsigned int)seed);
     }
 
-    // Returns a random boolean with probability 'percentage' of being true
     static bool roll(int percentage) {
         return (rand() % 100) < percentage;
     }
@@ -29,13 +28,10 @@ public:
         return (uint8_t)(rand() % 256);
     }
 
-    // Fix PHI nodes after splitting/modifying invalid basic block patterns
-    // This is a simplified placeholder for a complex operation
     static void fixStack(llvm::Function *f) {
-        // Implementation omitted for brevity in utils, usually handled by llvm::reg2mem if needed
     }
 };
 
-} // namespace obfuscator
+}  
 
-#endif // OBFUSCATOR_UTILS_H
+#endif  

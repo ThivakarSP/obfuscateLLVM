@@ -18,20 +18,17 @@ enum class ObfuscationLevel {
 struct ObfuscationOptions {
     ObfuscationLevel Level = ObfuscationLevel::None;
 
-    // Feature Flags
-    bool EnableFla = false; // Control Flow Flattening
-    bool EnableBcf = false; // Bogus Control Flow
-    bool EnableSub = false; // Instruction Substitution
-    bool EnableStr = false; // String Encryption
-    bool EnableInd = false; // Indirect Calls
+    bool EnableFla = false;
+    bool EnableBcf = false;
+    bool EnableSub = false;
+    bool EnableStr = false;
+    bool EnableInd = false;
 
-    // Parameters
-    int FlaSplitNum = 3;     // Number of times to split blocks for FLA
-    int BcfProb = 50;        // Probability (0-100) of adding bogus flow to a block
-    int BcfLoop = 1;         // Number of times to apply BCF (Not fully used in MVP code yet)
-    uint64_t Seed = 0;       // Random Seed (0 for random)
+    int FlaSplitNum = 3;
+    int BcfProb = 50;
+    int BcfLoop = 1;
+    uint64_t Seed = 0;
 
-    // Reporting
     bool GenReport = false;
     std::string ReportPath = "obfuscation_report.json";
     
@@ -39,7 +36,6 @@ struct ObfuscationOptions {
 };
 
 struct ObfuscationStats {
-    // Methods Applied
     int Cycles = 0;
     int BogusBlocks = 0;
     int OpaquePredicates = 0;
@@ -48,7 +44,6 @@ struct ObfuscationStats {
     int SubstitutedInstrs = 0;
     int IndirectCalls = 0;
     
-    // Detailed Metrics (Before/After)
     int OrgBlocks = 0;
     int NewBlocks = 0;
     int OrgInstrs = 0;
@@ -57,6 +52,6 @@ struct ObfuscationStats {
     int NewFunctions = 0;
 };
 
-} // namespace obfuscator
+}  
 
-#endif // OBFUSCATOR_CONFIG_H
+#endif  

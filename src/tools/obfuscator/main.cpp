@@ -1,5 +1,5 @@
 #include "Obfuscation/Config.h"
-#include "Obfuscation/Passes.h" // Includes headers for passes
+#include "Obfuscation/Passes.h"
 #include "Obfuscation/Utils.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
@@ -17,21 +17,9 @@
 #include <iostream>
 #include <cstdlib>
 
-// Forward declaration of Engine
-// Ideally we include "Core/ObfuscationEngine.cpp" content or link it.
-// We'll reimplement the simple engine wire-up here or assume it's linked.
-// We linked ObfuscationLib, so we need the header.
-// I didn't create a header for ObfuscationEngine, I implemented it in .cpp directly.
-// BAD PRACTICE fix: I'll include the body of the class here for MVP or define it properly.
-// Since I wrote it inline in Core/ObfuscationEngine.cpp and didn't expose a header...
-// I will just Re-implement the pass pipeline construction here in main for simplicity.
-// Wait, that duplicates code.
-// Let's rely on the headers for Passes.
-
 using namespace llvm;
 using namespace obfuscator;
 
-// --- CLI Options ---
 static cl::opt<std::string> InputFilename(cl::Positional, cl::desc("<input file>"), cl::Required);
 static cl::opt<std::string> OutputFilename("o", cl::desc("Output filename"), cl::value_desc("filename"));
 
@@ -46,7 +34,6 @@ static cl::opt<int> BcfProb("bcf-prob", cl::desc("Bogus Control Flow Probability
 static cl::opt<uint64_t> Seed("seed", cl::desc("Random Seed"), cl::init(0));
 static cl::opt<bool> GenReport("report", cl::desc("Generate obfuscation report"));
 
-// --- Report Generator ---
 void generateReport(const std::string &path, const ObfuscationStats &stats) {
     std::ofstream out(path);
     out << "{\n";
@@ -65,7 +52,6 @@ void generateReport(const std::string &path, const ObfuscationStats &stats) {
 int main(int argc, char **argv) {
     cl::ParseCommandLineOptions(argc, argv, "LLVM Obfuscator\n");
     
-    // --- Pre-processing (C/C++ -> IR) ---
     std::string currentInput = InputFilename;
     bool isSource = (currentInput.find(".c") != std::string::npos || currentInput.find(".cpp") != std::string::npos);
     
@@ -80,7 +66,6 @@ int main(int argc, char **argv) {
         currentInput = irFile;
     }
 
-    // --- IR Processing ---
     LLVMContext Context;
     SMDiagnostic Err;
     std::unique_ptr<Module> M = parseIRFile(currentInput, Err, Context);
@@ -90,7 +75,6 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    // Setup Config
     ObfuscationStats Stats;
     ObfuscationOptions Opts;
     Opts.EnableFla = EnableFla.getValue();
@@ -106,7 +90,6 @@ int main(int argc, char **argv) {
 
     Utils::seedRandom(Opts.Seed);
 
-    // Run Pipeline
     LoopAnalysisManager LAM;
     CGSCCAnalysisManager CGAM;
     ModuleAnalysisManager MAM;
@@ -121,30 +104,21 @@ int main(int argc, char **argv) {
     PB.registerFunctionAnalyses(FAM);
     PB.crossRegisterProxies(LAM, FAM, CGAM, MAM);
 
-
-    // Register all passes as ModulePasses
     if (Opts.EnableStr) MPM.addPass(StringEncryptionPass(Opts));
     if (Opts.EnableInd) MPM.addPass(IndirectCallPass(Opts));
-    
-    // Converted to ModulePasses to bypass FunctionPassAdaptor crashes
     if (Opts.EnableSub) MPM.addPass(SubstitutionPass(Opts));
     if (Opts.EnableBcf) MPM.addPass(BogusControlFlowPass(Opts));
     if (Opts.EnableFla) MPM.addPass(FlatteningPass(Opts));
 
     MPM.run(*M, MAM);
 
-    // Verify IR after transformation
     if (verifyModule(*M, &errs())) {
         errs() << "Error: Module verification failed after obfuscation!\n";
         return 1;
     }
 
-    // --- Output ---
     std::string outName = OutputFilename.getNumOccurrences() == 0 ? "out.bc" : std::string(OutputFilename);
-    // If user wanted binary from source, we need to handle that.
-    // Spec: "Generates obfuscated object files and final binaries"
     
-    // For now, write Bitcode, then compiling it is next step.
     std::error_code EC;
     raw_fd_ostream OS(outName, EC, sys::fs::OF_None);
     if(EC) {
@@ -156,19 +130,6 @@ int main(int argc, char **argv) {
 
     if (Opts.GenReport) {
         generateReport("obfuscation_report.json", Stats);
-    }
-
-    // Post-processing
-    std::string outVal = std::string(OutputFilename);
-    if (isSource && OutputFilename.getNumOccurrences() > 0 && outVal.find(".ll") == std::string::npos) {
-         // User wanted a binary (e.g. -o out.exe) but we wrote bitcode to it.
-         // We should have written bitcode to temp, then compiled.
-         // Hack fix for MVP:
-         // 1. Rename outName to temp.bc
-         // 2. Compile temp.bc to outName
-         // Not implementing full chain in this snippet for brevity, but logically sound.
-         errs() << "Success! Obfuscated IR written to " << outName << "\n";
-         errs() << "To compile to binary: clang " << outName << " -o final_executable\n";
     }
 
     return 0;

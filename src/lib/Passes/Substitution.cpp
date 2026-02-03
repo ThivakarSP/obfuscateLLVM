@@ -8,14 +8,14 @@ using namespace llvm;
 
 namespace obfuscator {
 
-// Helper: a = b + c -> a = b - (-c)
+ 
 void substituteAdd(BinaryOperator *BO) {
     if (!BO) return;
     IRBuilder<> builder(BO);
     Value *op1 = BO->getOperand(0);
     Value *op2 = BO->getOperand(1);
     
-    // a = b - (-c)
+     
     Value *negOp2 = builder.CreateNeg(op2);
     Value *result = builder.CreateSub(op1, negOp2);
 
@@ -28,7 +28,7 @@ void substituteSub(BinaryOperator *BO) {
     Value *op1 = BO->getOperand(0);
     Value *op2 = BO->getOperand(1);
     
-    // a = b - c -> a = b + (-c)
+     
     Value *negOp2 = builder.CreateNeg(op2);
     Value *result = builder.CreateAdd(op1, negOp2);
 
@@ -41,7 +41,7 @@ void substituteXor(BinaryOperator *BO) {
     Value *op1 = BO->getOperand(0);
     Value *op2 = BO->getOperand(1);
 
-    // a ^ b = (a | b) - (a & b)
+     
     Value *v1 = builder.CreateOr(op1, op2);
     Value *v2 = builder.CreateAnd(op1, op2);
     Value *result = builder.CreateSub(v1, v2);
@@ -58,7 +58,7 @@ PreservedAnalyses SubstitutionPass::run(Module &M, ModuleAnalysisManager &AM) {
     for (Function &F : M) {
         if (F.isDeclaration()) continue;
 
-        // Collect candidates first to avoid iterator modification issues
+         
         std::vector<BinaryOperator*> candidates;
         std::vector<Instruction*> toErase;
 
@@ -75,7 +75,7 @@ PreservedAnalyses SubstitutionPass::run(Module &M, ModuleAnalysisManager &AM) {
         }
 
         for (auto *BO : candidates) {
-            // Probability check - 50% chance to substitute
+             
             if (!Utils::roll(50)) continue;
             
             switch(BO->getOpcode()) {
@@ -89,7 +89,7 @@ PreservedAnalyses SubstitutionPass::run(Module &M, ModuleAnalysisManager &AM) {
             Changed = true;
         }
 
-        // Erase replaced instructions
+         
         for (auto *I : toErase) {
             I->eraseFromParent();
         }
@@ -98,4 +98,4 @@ PreservedAnalyses SubstitutionPass::run(Module &M, ModuleAnalysisManager &AM) {
     return Changed ? PreservedAnalyses::none() : PreservedAnalyses::all();
 }
 
-} // namespace obfuscator
+}  

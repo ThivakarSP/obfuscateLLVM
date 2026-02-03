@@ -51,6 +51,6 @@ private:
     ObfuscationOptions Options;
 };
 
-} // namespace obfuscator
+}  
 
-#endif // OBFUSCATOR_PASSES_H
+#endif  

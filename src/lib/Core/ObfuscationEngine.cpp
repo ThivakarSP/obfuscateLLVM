@@ -13,7 +13,6 @@ public:
     explicit ObfuscationEngine(ObfuscationOptions Opts) : Options(Opts) {}
 
     void run(Module &M) {
-        // Initialize Pass Managers
         LoopAnalysisManager LAM;
         FunctionAnalysisManager FAM;
         CGSCCAnalysisManager CGAM;
@@ -28,7 +27,6 @@ public:
 
         ModulePassManager MPM;
 
-        // --- Metrics Collection (Before) ---
         if (Options.Stats) {
             for(auto &F : M) {
                 Options.Stats->OrgFunctions++;
@@ -39,20 +37,14 @@ public:
             }
         }
 
-        // Add Passes based on Config
-        // Note: Order matters! 
-        // 1. String Encryption (Global)
         if (Options.EnableStr) {
             MPM.addPass(StringEncryptionPass(Options));
         }
 
-        // 1.5 Indirect Calls (Global/Module level usually or Func?)
-        // Implementing as Module pass for broader scope
         if (Options.EnableInd) {
             MPM.addPass(IndirectCallPass(Options));
         }
 
-        // 2. Control Flow & Instruction Level (Function)
         FunctionPassManager FPM;
         
         if (Options.EnableSub) {
@@ -71,7 +63,6 @@ public:
             MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
         }
 
-        // Execute Pipeline
         MPM.run(M, MAM);
     }
 
@@ -79,4 +70,4 @@ private:
     ObfuscationOptions Options;
 };
 
-} // namespace obfuscator
+}  
